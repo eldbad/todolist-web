@@ -12,13 +12,11 @@ import (
 
 var DB *bun.DB
 
-func Init() *bun.DB {
+func init() {
 	dsn := "postgres://postgres:@localhost:5432/test?sslmode=disable"
 	sqld := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 
 	DB = bun.NewDB(sqld, pgdialect.New())
 	ctx := context.Background()
 	DB.NewCreateTable().Model((*entity.Task)(nil)).Exec(ctx)
-
-	return DB
 }
