@@ -10,7 +10,7 @@ build:
 	go build -o ./bin/$(BINARY_NAME) ./cmd/main.go
 
 run:
-	go run ./cmd/main.go
+	go run ./cmd/todolist-web/main.go
 
 clean:
 	rm ./bin/*
