@@ -1,6 +1,9 @@
 package main
 
 import (
+	"os"
+
+	"github.com/eldbad/todolist-web/internal/delivery/postgresql"
 	"github.com/eldbad/todolist-web/internal/handlers"
 	"github.com/eldbad/todolist-web/internal/usecase"
 	"github.com/gin-gonic/gin"
@@ -8,6 +11,12 @@ import (
 
 func main() {
 	r := gin.Default()
+	dsn, ok := os.LookupEnv("DSN")
+	if ok {
+		// TODO: log it
+	}
+
+	postgresql.InitDB(dsn)
 
 	tl := usecase.TaskUsecase{}
 	th := handlers.NewTaskHandler(tl)
