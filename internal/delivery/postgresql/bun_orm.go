@@ -14,9 +14,9 @@ import (
 func InitDB(dsn string) (*bun.DB, error) {
 	sqld := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 
-	DB := bun.NewDB(sqld, pgdialect.New())
+	db := bun.NewDB(sqld, pgdialect.New())
 	ctx := context.Background()
-	DB.NewCreateTable().Model((*entity.Task)(nil)).Exec(ctx)
+	db.NewCreateTable().Model((*entity.Task)(nil)).Exec(ctx)
 
-	return DB, errors.New("oops") // TODO: make appropriate custom error
+	return db, errors.New("oops") // TODO: make appropriate custom error
 }
