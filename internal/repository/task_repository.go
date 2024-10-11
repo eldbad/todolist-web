@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 
-	"github.com/eldbad/todolist-web/internal/delivery/postgresql"
 	"github.com/eldbad/todolist-web/internal/entity"
 	"github.com/eldbad/todolist-web/internal/logging"
 	"github.com/uptrace/bun"
