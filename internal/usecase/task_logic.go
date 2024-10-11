@@ -2,10 +2,17 @@ package usecase
 
 import (
 	"github.com/eldbad/todolist-web/internal/entity"
+	"github.com/eldbad/todolist-web/internal/repository"
 )
 
-type TaskUsecase struct{}
+type TaskUsecase struct {
+	tr *repository.TaskRepository
+}
 
-func (tl TaskUsecase) GetAllTasks() ([]entity.Task, error) {
-	panic("not implemented")
+func NewTaskUsecase(tr *repository.TaskRepository) *TaskUsecase {
+	return &TaskUsecase{tr: tr}
+}
+
+func (tu TaskUsecase) GetAllTasks() ([]entity.Task, error) {
+	return tu.tr.FindAll()
 }

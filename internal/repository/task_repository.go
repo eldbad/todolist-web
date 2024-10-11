@@ -5,13 +5,16 @@ import (
 
 	"github.com/eldbad/todolist-web/internal/delivery/postgresql"
 	"github.com/eldbad/todolist-web/internal/entity"
+	"github.com/eldbad/todolist-web/internal/logging"
 	"github.com/uptrace/bun"
 )
 
 type TaskRepository struct {
+	db *bun.DB
 }
 
 func NewTaskRepository(db *bun.DB) *TaskRepository {
+	postgresql.InitDB(dsn)
 	tr := &TaskRepository{}
 
 	return tr
@@ -24,6 +27,7 @@ func (tr *TaskRepository) FindAll() ([]entity.Task, error) {
 	err := postgresql.DB.NewSelect().Model(&tasks).Scan(ctx)
 	if err != nil {
 		// TODO: log an error
+		logging.Logger.Error().Msg("oops from zerolog")
 	}
 
 	return tasks, err // TODO: return custom error or use logging

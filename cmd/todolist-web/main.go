@@ -6,6 +6,7 @@ import (
 	"github.com/eldbad/todolist-web/internal/delivery/postgresql"
 	"github.com/eldbad/todolist-web/internal/handlers"
 	"github.com/eldbad/todolist-web/internal/logging"
+	"github.com/eldbad/todolist-web/internal/repository"
 	"github.com/eldbad/todolist-web/internal/usecase"
 	"github.com/gin-gonic/gin"
 )
@@ -17,11 +18,15 @@ func main() {
 		// TODO: log it
 	}
 
-	postgresql.InitDB(dsn)
 	logging.NewLogger()
+	db, err := postgresql.InitDB(dsn)
+	if err != nil {
+		// TODO: log it
+	}
 
-	tl := usecase.TaskUsecase{}
-	th := handlers.NewTaskHandler(tl)
+	tr := repository.NewTaskRepository(db)
+	tu := usecase.NewTaskUsecase(tr)
+	th := handlers.NewTaskHandler(tu)
 	th.Register(&r.RouterGroup)
 
 	r.Run()
