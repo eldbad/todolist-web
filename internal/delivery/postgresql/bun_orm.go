@@ -11,12 +11,14 @@ import (
 	"github.com/uptrace/bun/driver/pgdriver"
 )
 
-func InitDB(dsn string) (*bun.DB, error) {
+var DB *bun.DB
+
+func InitDB(dsn string) error {
 	sqld := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 
-	db := bun.NewDB(sqld, pgdialect.New())
+	DB = bun.NewDB(sqld, pgdialect.New())
 	ctx := context.Background()
-	db.NewCreateTable().Model((*entity.Task)(nil)).Exec(ctx)
+	DB.NewCreateTable().Model((*entity.Task)(nil)).Exec(ctx)
 
-	return db, errors.New("oops") // TODO: make appropriate custom error
+	return errors.New("oops") // TODO: make appropriate custom error
 }
