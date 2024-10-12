@@ -4,14 +4,21 @@ import (
 	"time"
 
 	"github.com/eldbad/todolist-web/internal/entity"
-	"github.com/eldbad/todolist-web/internal/repository"
 )
 
-type TaskUsecase struct {
-	tr *repository.TaskRepository
+type taskRepository interface {
+	FindAll() ([]entity.Task, error)
+	Find(*entity.Task) (*entity.Task, error)
+	Create(*entity.Task) error
+	Update(*entity.Task) error
+	Delete(*entity.Task) error
 }
 
-func NewTaskUsecase(tr *repository.TaskRepository) *TaskUsecase {
+type TaskUsecase struct {
+	tr taskRepository
+}
+
+func NewTaskUsecase(tr taskRepository) *TaskUsecase {
 	return &TaskUsecase{tr: tr}
 }
 
