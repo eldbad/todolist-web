@@ -31,10 +31,9 @@ func (tr *TaskRepository) FindAll() ([]entity.Task, error) {
 	return tasks, err // TODO: return custom error or use logging
 }
 
-func (tr *TaskRepository) FindById(id int) (entity.Task, error) {
-	task := entity.Task{}
+func (tr *TaskRepository) Find(task *entity.Task) (*entity.Task, error) {
 	ctx := context.Background()
-	err := tr.db.NewSelect().Model(&task).Where("id = ?", id).Scan(ctx)
+	err := tr.db.NewSelect().Model(&task).Where("id = ?", task.Id).Scan(ctx)
 
 	return task, err
 }
@@ -46,8 +45,7 @@ func (tr *TaskRepository) Create(task *entity.Task) error {
 	return err
 }
 
-func (tr *TaskRepository) Update(id int) error {
-	task := entity.Task{Id: id}
+func (tr *TaskRepository) Update(task *entity.Task) error {
 	ctx := context.Background()
 
 	_, err := tr.db.NewUpdate().Model(task).WherePK().Exec(ctx)
@@ -55,8 +53,7 @@ func (tr *TaskRepository) Update(id int) error {
 	return err
 }
 
-func (tr *TaskRepository) Delete(id int) error {
-	task := entity.Task{Id: id}
+func (tr *TaskRepository) Delete(task *entity.Task) error {
 	ctx := context.Background()
 
 	_, err := tr.db.NewDelete().Model(task).WherePK().Exec(ctx)
