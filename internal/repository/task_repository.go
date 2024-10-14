@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/eldbad/todolist-web/internal/entity"
-	"github.com/eldbad/todolist-web/internal/logging"
 	"github.com/uptrace/bun"
 )
 
@@ -23,12 +22,8 @@ func (tr *TaskRepository) FindAll() ([]entity.Task, error) {
 	ctx := context.Background()
 
 	err := tr.db.NewSelect().Model(&tasks).Scan(ctx)
-	if err != nil {
-		// TODO: log an error
-		logging.Logger.Error().Msg("oops from zerolog")
-	}
 
-	return tasks, err // TODO: return custom error or use logging
+	return tasks, err
 }
 
 func (tr *TaskRepository) Find(task *entity.Task) (*entity.Task, error) {
