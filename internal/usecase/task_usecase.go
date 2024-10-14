@@ -18,8 +18,8 @@ type TaskUsecase struct {
 	tr taskRepository
 }
 
-func NewTaskUsecase(tr taskRepository) *TaskUsecase {
-	return &TaskUsecase{tr: tr}
+func NewTaskUsecase(tr taskRepository) TaskUsecase {
+	return TaskUsecase{tr: tr}
 }
 
 func (tu TaskUsecase) GetAllTasks() ([]entity.Task, error) {
