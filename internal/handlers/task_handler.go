@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -14,6 +15,10 @@ type taskHandler struct {
 
 type taskUsecase interface {
 	GetAllTasks() ([]entity.Task, error)
+	GetTaskById(int) (entity.Task, error)
+	CreateTaskById(int) error
+	UpdateTaskById(int) error
+	DeleteTaskById(int) error
 }
 
 func NewTaskHandler(tl taskUsecase) *taskHandler {
@@ -23,10 +28,14 @@ func NewTaskHandler(tl taskUsecase) *taskHandler {
 }
 
 func (th taskHandler) Register(r *gin.RouterGroup) {
-	r.GET("/get_task", th.GetTask) // TODO: Make it the same with other methods
+	r.GET("/task", th.GetTasks)
+	r.GET("/task/:id", th.GetTask)
+	r.POST("/task/:id", th.CreateTask)
+	r.PUT("/task/:id", th.UpdateTask)
+	r.DELETE("/task/:id", th.DeleteTask)
 }
 
-func (th *taskHandler) GetTask(c *gin.Context) {
+func (th *taskHandler) GetTasks(c *gin.Context) {
 	tasks, err := th.taskUsecase.GetAllTasks()
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{})
@@ -35,18 +44,58 @@ func (th *taskHandler) GetTask(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"tasks": tasks})
 }
 
-func (th *taskHandler) GetTasks(c *gin.Context) {
-	panic("not implemented")
+func (th *taskHandler) GetTask(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{})
+	}
+
+	task, err := th.taskUsecase.GetTaskById(id)
+	if err != nil {
+		// TODO: think about error handling in this case
+	}
+
+	c.JSON(http.StatusOK, gin.H{"task": task})
 }
 
 func (th *taskHandler) CreateTask(c *gin.Context) {
-	panic("not implemented")
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{})
+	}
+
+	err = th.taskUsecase.CreateTaskById(id)
+	if err != nil {
+
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (th *taskHandler) UpdateTask(c *gin.Context) {
-	panic("not implemented")
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{})
+	}
+
+	err = th.taskUsecase.UpdateTaskById(id)
+	if err != nil {
+
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (th *taskHandler) DeleteTask(c *gin.Context) {
-	panic("not implemented")
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{})
+	}
+
+	err = th.taskUsecase.DeleteTaskById(id)
+	if err != nil {
+
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
 }
