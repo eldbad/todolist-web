@@ -18,5 +18,6 @@ func NewLogger() {
 	}
 	defer f.Close()
 
-	*Logger = zerolog.New(f)
+	lg := zerolog.New(f)
+	Logger = &lg
 }
