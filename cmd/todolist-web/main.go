@@ -9,9 +9,14 @@ import (
 	"github.com/eldbad/todolist-web/internal/repository"
 	"github.com/eldbad/todolist-web/internal/usecase"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+
+	}
 	r := gin.Default()
 	dsn, ok := os.LookupEnv("DSN")
 	if ok {
