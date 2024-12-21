@@ -1,0 +1,5 @@
+## Todolist api
+Pet project
+## Running
+Start postrgresql daemon and run:
+```make```
