@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  web-app:
+    image: todolist-web
+    container_name: todolist-web
+    build: .
+    ports:
+      - 8080:8080
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    container_name: todolist-web-postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: eldar
+      POSTGRES_DB: todolist-web
+      POSTGRES_PASSWORD: 1234
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+volumes:
+  pg-data:
